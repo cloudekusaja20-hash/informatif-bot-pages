@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>TikTok Login Callback - Informatif Bot</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font-family: Arial, sans-serif; max-width: 600px; margin: 60px auto; padding: 0 20px; line-height: 1.6; color: #222; text-align: center; }
+  h1 { font-size: 1.4em; }
+  .code-box { background: #f4f4f4; border: 2px dashed #888; border-radius: 8px; padding: 20px; margin: 24px 0; font-size: 1.1em; word-break: break-all; font-family: monospace; }
+  .btn { background: #fe2c55; color: white; border: none; padding: 12px 24px; border-radius: 6px; font-size: 1em; cursor: pointer; }
+  .btn:active { opacity: 0.8; }
+  .muted { color: #777; font-size: 0.9em; }
+  .error { color: #c0392b; }
+</style>
+</head>
+<body>
+
+<h1>Login TikTok Berhasil</h1>
+<p>Salin kode di bawah ini, lalu kirim ke bot Telegram kamu dengan format:<br>
+<code>/tiktok_code KODE</code></p>
+
+<div class="code-box" id="codeBox">Memuat kode...</div>
+<button class="btn" id="copyBtn" onclick="copyCode()">Salin Kode</button>
+<p class="muted" id="copiedMsg" style="display:none;">✅ Tersalin ke clipboard!</p>
+
+<p class="muted" style="margin-top:40px;">Kalau halaman ini menampilkan error, kembali ke Telegram dan jalankan ulang <code>/tiktok_setup</code>.</p>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+  const errorParam = params.get("error");
+  const box = document.getElementById("codeBox");
+  const btn = document.getElementById("copyBtn");
+
+  if (code) {
+    box.textContent = code;
+  } else if (errorParam) {
+    box.textContent = "Error: " + errorParam;
+    box.classList.add("error");
+    btn.style.display = "none";
+  } else {
+    box.textContent = "Tidak ada kode ditemukan di URL ini.";
+    box.classList.add("error");
+    btn.style.display = "none";
+  }
+
+  function copyCode() {
+    navigator.clipboard.writeText(code).then(() => {
+      document.getElementById("copiedMsg").style.display = "block";
+    });
+  }
+</script>
+
+</body>
+</html>
